@@ -14,7 +14,7 @@ export default function SuportePage() {
   const fimChatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const novaConexao = io('http://localhost:3333');
+    const novaConexao = io(`${process.env.NEXT_PUBLIC_API_URL}`);
     setSocket(novaConexao);
 
     // Boas-vindas do Bot assim que abrir a tela

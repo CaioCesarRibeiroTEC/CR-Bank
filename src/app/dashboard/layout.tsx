@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // Função para atualizar o saldo silenciosamente (sem recarregar a tela)
   const buscarSaldoReal = async (userLocal: any) => {
     try {
-      const resposta = await fetch(`http://localhost:3333/contas/${userLocal.accounts[0].numero_conta}/extrato`);
+      const resposta = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contas/${userLocal.accounts[0].numero_conta}/extrato`);
       if (resposta.ok) {
         const dadosServer = await resposta.json();
         const usuarioAtualizado = { ...userLocal };
@@ -47,7 +47,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     // ============================================
     // CONEXÃO DE NOTIFICAÇÕES (TEMPO REAL)
     // ============================================
-    const socket = io('http://localhost:3333');
+    const socket = io(``);
     const contaId = userLocal.accounts[0].id;
 
     // Conecta e registra a conta para ouvir os próprios eventos

@@ -14,7 +14,7 @@ export default function Cadastro() {
     setErro('');
 
     try {
-      const resposta = await fetch('http://localhost:3333/usuarios', {
+      const resposta = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/usuarios`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
