@@ -47,18 +47,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     // ============================================
     // CONEXÃO DE NOTIFICAÇÕES (TEMPO REAL)
     // ============================================
-    const socket = io(``);
+
+    const socket = io(process.env.NEXT_PUBLIC_API_URL as string);
     const contaId = userLocal.accounts[0].id;
 
-    // Conecta e registra a conta para ouvir os próprios eventos
+
     socket.emit('registrar_conta', contaId);
 
-    // Ficar ouvindo e aguardando a notificação
+
     socket.on('notificacao_pix', (dadosDaTransacao) => {
       setNotificacao({
         titulo: dadosDaTransacao.titulo,
         mensagem: dadosDaTransacao.mensagem
       });
+
+  
+      buscarSaldoReal(userLocal);
     });
 
     return () => { socket.disconnect(); };
