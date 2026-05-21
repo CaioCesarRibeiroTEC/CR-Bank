@@ -11,7 +11,9 @@ export default function SuportePage() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [mensagens, setMensagens] = useState<any[]>([]);
   const [msgAtual, setMsgAtual] = useState('');
-  const fimChatRef = useRef<HTMLDivElement>(null);
+  
+  // 1. Nova referência apontando para a caixa inteira de mensagens
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const novaConexao = io(`${process.env.NEXT_PUBLIC_API_URL}`);
@@ -30,9 +32,11 @@ export default function SuportePage() {
     return () => { novaConexao.disconnect(); };
   }, []);
 
-  // Rola para o final automático
+  // 2. Rola para o final automático APENAS dentro da caixa
   useEffect(() => {
-    fimChatRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   }, [mensagens]);
 
   // Função para enviar texto digitado
@@ -57,7 +61,8 @@ export default function SuportePage() {
       <p style={{ color: '#6b7280' }}>Tire suas dúvidas com o nosso assistente virtual.</p>
 
       <ChatContainer>
-        <MensagensBox>
+        {/* 3. Adicionamos o ref diretamente no MensagensBox */}
+        <MensagensBox ref={chatContainerRef}>
           {mensagens.map((msg, index) => {
             const isMinha = msg.autor_id === socket?.id;
             const isBot = msg.autor_id === 'bot_crbank';
@@ -71,7 +76,7 @@ export default function SuportePage() {
               </MensagemBalao>
             );
           })}
-          <div ref={fimChatRef} />
+          {/* A div vazia (fimChatRef) que puxava a página para baixo foi removida daqui */}
         </MensagensBox>
 
         {/* O MENU DE ESCOLHAS RÁPIDAS (As mensagens pré-gravadas) */}

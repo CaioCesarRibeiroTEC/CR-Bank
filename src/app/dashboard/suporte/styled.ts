@@ -27,6 +27,7 @@ export const MensagensBox = styled.div`
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  scroll-behavior: smooth;
   background-color: #f9fafb;
   display: flex;
   flex-direction: column;
